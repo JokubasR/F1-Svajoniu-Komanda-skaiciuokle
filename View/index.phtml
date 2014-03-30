@@ -1,0 +1,33 @@
+<div class="jumbotron">
+    <h1>
+        F1 Svajonių Komandos skaičiuoklė
+    </h1>
+</div>
+
+<div class="panel-info">
+    <select name="stage" id="stage">
+        <?php foreach ($stages as $stage) :?>
+            <option value="<?=$stage['link']?>"><?=$stage['title']?></option>
+        <?php endforeach; ?>
+    </select>
+
+    <?php foreach ($teams as $team) :?>
+        <h2><?=$team['title']?></h2>
+        <img src="http://www.formula1.com<?=$team['image']?>" alt="<?=$team['title']?>"/>
+        <?php foreach ($team['members'] as $member) :?>
+            <img src="http://www.formula1.com<?=$member['image']?>" alt="<?=$member['title']?>"/>
+            <span><?=$member['title']?></span>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+
+    <ul>
+        <?php foreach ($results as $result) :?>
+            <li>
+                <?php foreach ($result as $label => $value) :?>
+                    <strong><?=$label?></strong>: <span><?=$value?></span>
+                <?php endforeach; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+
