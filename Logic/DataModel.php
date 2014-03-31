@@ -7,22 +7,47 @@
 namespace Logic;
 
 
-class Model
+class DataModel
 {
     /** @var \Logic\Settings */
     private $_settings;
 
-    private $xPathStages = "//table[@class='raceResults']/tr/td[1]/a";
+    private $xPathStages    = "//table[@class='raceResults']/tr/td[1]/a";
 
-    private $xPathTeam   = "//div[@id='contentMain']//div[@class='indexContainer']";
+    private $xPathTeam      = "//div[@id='contentMain']//div[@class='indexContainer']";
 
-    private $xPathResults = "//table[@class='raceResults']/tr[position() > 1]";
+    private $xPathResults   = "//table[@class='raceResults']/tr[position() > 1]";
+
+    private $xPathDrivers   = "//ul[@class='driverMugShot']/li/div/p/a";
+
+    private $teamEngines    = [
+        'Mercedes' => [
+            'Mercedes',
+            'McLaren',
+            'Williams',
+            'Force India',
+        ],
+        'Renault' => [
+            'Red Bull Racing',
+            'Lotus',
+            'Toro Rosso',
+            'Caterham',
+        ],
+        'Ferrari' => [
+            'Ferrari',
+            'Sauber',
+            'Marussia',
+        ],
+    ];
 
     public function __construct()
     {
         $this->_settings = new Settings();
     }
 
+    /**
+     * @return array
+     */
     public function getGrandPrixs()
     {
         $data = $this->getContent(Settings::URL_STAGES);
@@ -47,9 +72,12 @@ class Model
         return $result;
     }
 
-    public function getDrivers()
+    /**
+     * @return array
+     */
+    public function getTeams()
     {
-        $data = $this->getContent(Settings::URL_TEAMS_DRIVERS);
+        $data = $this->getContent(Settings::URL_TEAMS);
 
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
@@ -84,6 +112,12 @@ class Model
         return $result;
     }
 
+    /**
+     * @param       $stage
+     * @param array $stages
+     *
+     * @return array
+     */
     public function getResults($stage, $stages = [])
     {
         if (empty($stages)) {
@@ -118,6 +152,51 @@ class Model
 
             return $result;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getDrivers()
+    {
+        $data = $this->getContent(Settings::URL_DRIVERS);
+
+        $doc = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $doc->loadHTML($data);
+
+        $xpath = new \DOMXPath($doc);
+
+        $items = $xpath->query($this->xPathDrivers);
+
+        $result = [];
+
+        for ($i = 0; $i < $items->length; $i++) {
+            $item = $items->item($i);
+
+            $driverData = $item->childNodes->item(0)->nodeValue;
+
+            $team = $item->childNodes->item(1)->nodeValue;
+
+            $driverData = explode(' ', trim($driverData));
+
+            $driverId = array_shift($driverData);
+            $result[$team][] = [
+                'driverId'  => $driverId,
+                'title'     => implode(' ', $driverData),
+                'team'      => $team,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEngines()
+    {
+        return $this->teamEngines;
     }
 
 

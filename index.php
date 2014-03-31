@@ -18,5 +18,17 @@
         die(print_r($data, true));
     }
 
+    /*
+     * Router
+     */
+
     $indexController = new Controller\IndexController();
-    $indexController->defaultAction();
+
+    $query = $_SERVER['REQUEST_URI'];
+
+    if (strpos($query, 'points')) {
+        $indexController->pointsAction();
+    } else {
+        $indexController->defaultAction();
+    }
+
