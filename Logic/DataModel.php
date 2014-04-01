@@ -16,7 +16,9 @@ class DataModel
 
     private $xPathTeam      = "//div[@id='contentMain']//div[@class='indexContainer']";
 
-    private $xPathResults   = "//table[@class='raceResults']/tr[position() > 1]";
+    private $xPathResults       = "//table[@class='raceResults']/tr[position() > 1]";
+
+    private $xPathQualifyingLink = "//li[@class='listheader' and contains(., 'QUALIFYING')]//a[contains(.,'QUALIFYING')]/@href";
 
     private $xPathDrivers   = "//ul[@class='driverMugShot']/li/div/p/a";
 
@@ -113,19 +115,24 @@ class DataModel
     }
 
     /**
-     * @param       $stage
-     * @param array $stages
+     * @param string $stage
+     * @param array  $stages
+     * @param string $stageUrl
      *
      * @return array
      */
-    public function getResults($stage, $stages = [])
+    public function getResults($stage = "", $stages = [], $stageUrl = null)
     {
-        if (empty($stages)) {
+        if (empty($stages) && !empty($stage)) {
             $stages = $this->getGrandPrixs();
         }
 
-        if ($stageUrl = $stages[$stage]['link']) {
-            $data = $this->getContent("http://www.formula1.com/". $stageUrl);
+        $stageUrl = null === $stageUrl
+                        ? $stages[$stage]['link']
+                        : $stageUrl;
+
+        if (!empty($stageUrl)) {
+            $data = $this->getContent(Settings::URL_HOST . $stageUrl);
 
             $doc = new \DOMDocument();
             libxml_use_internal_errors(true);
@@ -147,6 +154,7 @@ class DataModel
                     'position'  => $item->childNodes->item(0)->nodeValue,
                     'title'     => $item->childNodes->item(4)->firstChild->nodeValue,
                     'points'    => $item->childNodes->item(12)->nodeValue,
+                    'team'      => $item->childNodes->item(6)->firstChild->nodeValue,
                 ];
             }
 
@@ -191,12 +199,42 @@ class DataModel
         return $result;
     }
 
+    public function getQualifyingResults($raceUlr)
+    {
+        /*
+         * Get qualifying link
+         */
+
+        $data = $this->getContent(Settings::URL_HOST . $raceUlr);
+
+        $doc = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $doc->loadHTML($data);
+
+        $xpath = new \DOMXPath($doc);
+
+        $items = $xpath->query($this->xPathQualifyingLink);
+
+        $qualifyingLink = $items->item(0)->nodeValue;
+
+        /*
+         * Get qualifying results
+         */
+
+        return $this->getResults(null, null, $qualifyingLink);
+    }
+
     /**
      * @return array
      */
     public function getEngines()
     {
         return $this->teamEngines;
+    }
+
+    public function engineHasTeam($engine, $team)
+    {
+        return in_array($team, $this->teamEngines[$engine]);
     }
 
 

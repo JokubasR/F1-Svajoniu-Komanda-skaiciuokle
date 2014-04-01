@@ -28,14 +28,14 @@ class IndexController extends BaseController
     {
         $stages     = $this->_dataModel->getGrandPrixs();
         $teams      = $this->_dataModel->getTeams();
-        $results    = $this->_dataModel->getResults('Malaysia', $stages);
+//        $results    = $this->_dataModel->getResults('Malaysia', $stages);
         $engines    = $this->_dataModel->getEngines();
         $drivers    = $this->_dataModel->getDrivers();
+//        $qualifyingResult = $this->_dataModel->getQualifyingResults($stages['Malaysia']['link']);
 
         return $this->render('index', [
             'stages'    => $stages,
             'teams'     => $teams,
-            'results'   => $results,
             'engines'   => $engines,
             'drivers'   => $drivers,
         ]);
@@ -43,8 +43,7 @@ class IndexController extends BaseController
 
     public function pointsAction()
     {
-        /**@todo implement qualifying results */
-
+        var_dump($_POST);
         if (!empty($_POST)) {
             $points = $this->_pointsModel->calculateQualifyingPoints($_POST, null);
         }
