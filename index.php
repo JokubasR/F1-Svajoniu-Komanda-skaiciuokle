@@ -14,8 +14,15 @@
         include_once($filename);
     }
 
+    function d($data){
+        echo "<pre>";
+        var_dump($data);
+        echo "</pre>";
+    }
+
     function dd($data){
-        die(print_r($data, true));
+        d($data);
+        die();
     }
 
     /*

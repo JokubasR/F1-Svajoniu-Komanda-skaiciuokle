@@ -45,7 +45,7 @@ class IndexController extends BaseController
     {
         var_dump($_POST);
         if (!empty($_POST)) {
-            $points = $this->_pointsModel->calculateQualifyingPoints($_POST, null);
+            $points = $this->_pointsModel->calculatePoints($_POST);
         }
 
         return $this->render('points',[

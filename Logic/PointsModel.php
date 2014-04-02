@@ -12,6 +12,13 @@ namespace Logic;
  */
 class PointsModel
 {
+    const TYPE_QUALIFYING   = 'qualifying';
+    const TYPE_RACE         = 'race';
+
+    const POINTS_MULTIPLIER_DRIVER  = 1;
+    const POINTS_MULTIPLIER_TEAM    = 0.8;
+    const POINTS_MULTIPLIER_ENGINE  = 0.2;
+
     /** @var DataModel */
     private $_dataModel;
 
@@ -70,59 +77,78 @@ class PointsModel
         return $this->pointsRace;
     }
 
-    public function calculateQualifyingPoints($data, $stage)
+    /**
+     * Returns calculated points for both events
+     *
+     * @param $data
+     *
+     * @return array
+     */
+    public function calculatePoints($data)
     {
         $qualifyingResults  = $this->_dataModel->getQualifyingResults($data['stage']);
         $raceResults        = $this->_dataModel->getResults(null, null, $data['stage']);
 
-//        var_dump($raceResults);
-//        dd($qualifyingResults);
-
         $points = [];
 
-        $pilots = array_slice($data, 1, 2, true);
-        
-
-        foreach ($qualifyingResults as $result) {
-            
-            foreach ($pilots as $key => $pilot) {
-                if ($result['driverId'] === $pilot) {
-                    $points['qualifying'][$key] = $this->getQualifyingPoints()[$result['position']];
-                }
-            }
-            
-            if ($result['team'] === $data['team']) {
-                $points['qualifying']['team'] = $this->getQualifyingPoints()[$result['position']] * 0.8
-                                        + $points['qualifying']['team'];
-            }
-
-            if ($this->_dataModel->engineHasTeam($data['engine'], $result['team'])) {
-                $points['qualifying']['engine'] = $this->getQualifyingPoints()[$result['position']] * 0.2
-                                        + $points['qualifying']['engine'];
-            }
+        if (!empty($qualifyingResults)) {
+            $points += $this->pointCalculateMacro($qualifyingResults, $data, self::TYPE_QUALIFYING);
         }
 
-        foreach ($raceResults as $result) {
+        if (!empty($raceResults)) {
+            $points += $this->pointCalculateMacro($raceResults, $data, self::TYPE_RACE);
+        }
+
+        return $points;
+    }
+
+    /**
+     * Calculates given type results
+     *
+     * @param $data
+     * @param $team
+     * @param $type
+     *
+     * @return array
+     */
+    private function pointCalculateMacro($data, $team, $type)
+    {
+        $pilots = array_slice($team, 1, 2, true);
+
+        $points = [
+            $type => [
+                'team'      => 0,
+                'engine'    => 0,
+            ],
+        ];
+
+        foreach ($data as $result) {
+
             foreach ($pilots as $key => $pilot) {
                 if ($result['driverId'] === $pilot) {
-                    $points['race'][$key] = $this->getRacePoints()[$result['position']];
+                    $points[$type][$key] = $this->getPoints($type)[$result['position']] * self::POINTS_MULTIPLIER_DRIVER;
                 }
             }
 
-            if ($result['team'] === $data['team']) {
-                $points['race']['team'] = $this->getQualifyingPoints()[$result['position']] * 0.8
-                                        + $points['race']['team'];
+            if ($result['team'] === $team['team']) {
+                $points[$type]['team'] += $this->getPoints($type)[$result['position']] * self::POINTS_MULTIPLIER_TEAM;
             }
 
-            if ($this->_dataModel->engineHasTeam($data['engine'], $result['team'])) {
-                $points['race']['engine'] = $this->getQualifyingPoints()[$result['position']] * 0.2
-                                        + $points['race']['engine'];
+            if ($this->_dataModel->engineHasTeam($team['engine'], $result['team'])) {
+                $points[$type]['engine'] += $this->getPoints($type)[$result['position']] * self::POINTS_MULTIPLIER_ENGINE;
             }
         }
+        d($team);
+        return $points;
+    }
 
-
-        dd($points);
-
-
+    private function getPoints($type)
+    {
+        switch ($type) {
+            case self::TYPE_RACE:
+                return $this->getQualifyingPoints();
+            case self::TYPE_QUALIFYING:
+                return $this->getRacePoints();
+        }
     }
 } 
