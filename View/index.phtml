@@ -19,9 +19,9 @@
                 <select name="pilot1" id="pilot-1" class="form-control"
                         data-placeholder="Pasirinkite lenktytininką" required="required">
                     <option></option>
-                    <?php foreach ($drivers as $team => $driver) : ?>
+                    <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
-                            <?php foreach ($driver as $driver) : ?>
+                            <?php foreach ($teamDrivers as $driver) : ?>
                                 <option
                                     value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
                             <?php endforeach; ?>
@@ -37,9 +37,9 @@
                 <select name="pilot2" id="pilot-2" class="form-control"
                         data-placeholder="Pasirinkite lenktytininką" required="required">
                     <option></option>
-                    <?php foreach ($drivers as $team => $driver) : ?>
+                    <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
-                            <?php foreach ($driver as $driver) : ?>
+                            <?php foreach ($teamDrivers as $driver) : ?>
                                 <option
                                     value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
                             <?php endforeach; ?>

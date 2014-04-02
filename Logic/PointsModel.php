@@ -91,10 +91,11 @@ class PointsModel
      * @param       $data
      * @param array $qualifyingResults
      * @param array $raceResults
+     * @param null  $stageTitle
      *
      * @return array
      */
-    public function calculatePoints($data, $qualifyingResults = [], $raceResults = [])
+    public function calculatePoints($data, $qualifyingResults = [], $raceResults = [], $stageTitle = null)
     {
         $qualifyingResults  = empty($qualifyingResults)
                                 ? $this->_dataModel->getQualifyingResults($data['stage'])
@@ -122,7 +123,9 @@ class PointsModel
 
         return [
             'points' => $points,
-            'stage'         => $this->_dataModel->getGrandPrixTitle($data['stage']),
+            'stage'         => null === $stageTitle
+                        ? $this->_dataModel->getGrandPrixTitle($data['stage'])
+                        : $stageTitle,
             'totalPoints'   => $totalPoints,
         ];
     }
@@ -203,32 +206,41 @@ class PointsModel
         $engines    = $this->_dataModel->getEngines();
 
         $points = [];
+        $bestTeam = [];
 
         if (!empty($qualifyingResults) && !empty($raceResults)) {
 
-            foreach ($drivers as $pilot1) {
-                foreach ($drivers2 as $pilot2) {
-                    if ($pilot1 === $pilot2) {
-                        continue;
-                    }
-                    foreach ($teams as $team) {
-                        foreach ($engines as $engine) {
-                            $bestTeam = [
-                                'pilot1' => $pilot1['driverId'],
-                                'pilot2' => $pilot2['driverId'],
-                                'team'   => $team['title'],
-                                'engine' => $engine['title'],
-                            ];
-                            $points[] = [
-                                'team'   => $bestTeam,
-                                'points' => $this->calculatePoints($bestTeam, $qualifyingResults, $raceResults),
-                            ];
+            foreach ($drivers as $team1pilots) {
+                foreach ($team1pilots as $pilot1) {
+                    foreach ($drivers2 as $team2pilots) {
+                        foreach ($team2pilots as $pilot2) {
+                            if ($pilot1 === $pilot2) {
+                                continue;
+                            }
+                            foreach ($teams as $team) {
+                                foreach ($engines as $engine => $engineTeams) {
+                                    $currentTeam = [
+                                        'pilot1' => $pilot1['driverId'],
+                                        'pilot2' => $pilot2['driverId'],
+                                        'team'   => $team['title'],
+                                        'engine' => $engine,
+                                        'stage'  => $stageUrl,
+                                    ];
+                                    $point = $this->calculatePoints($currentTeam, $qualifyingResults, $raceResults, 'BEST TEAM');
+
+                                    if (empty($bestTeam)) {
+                                        $bestTeam = $currentTeam + ['points' => $point['totalPoints']];
+                                    }
+                                    if ($point['totalPoints'] > $bestTeam['points']) {
+                                        $bestTeam = $currentTeam + ['points' => $point['totalPoints']];                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
-        return $points;
+        return $bestTeam;
     }
 } 

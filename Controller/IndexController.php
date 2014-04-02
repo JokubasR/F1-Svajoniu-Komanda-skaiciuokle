@@ -65,7 +65,7 @@ class IndexController extends BaseController
                 $bestTeam = [];
             }
         }
-die($bestTeam);
+dd($bestTeam);
         die($this->renderAjax('points', [
             'bestTeam' => $bestTeam,
         ]));
