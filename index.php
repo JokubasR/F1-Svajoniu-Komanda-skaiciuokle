@@ -25,6 +25,16 @@
         die();
     }
 
+    /**
+     * Translates by keyword
+     * @param $message
+     *
+     * @return mixed
+     */
+    function translate($message){
+        return \Logic\TranslateModel::translate($message);
+    }
+
     /*
      * Router
      */
@@ -33,9 +43,22 @@
 
     $query = $_SERVER['REQUEST_URI'];
 
-    if (strpos($query, 'points')) {
-        $indexController->pointsAction();
-    } else {
-        $indexController->defaultAction();
+    /*
+     * Mini router
+     */
+
+    try{
+        switch(true){
+            case strpos($query, 'points'):
+                $indexController->pointsAction();
+                break;
+            case strpos($query, 'best-team'):
+                $indexController->bestTeamAction();
+                break;
+            default:
+                $indexController->defaultAction();
+        }
+    } catch (Exception $exception) {
+        die('Something went bad!');
     }
 

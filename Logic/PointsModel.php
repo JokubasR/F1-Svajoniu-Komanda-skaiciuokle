@@ -88,26 +88,43 @@ class PointsModel
     /**
      * Returns calculated points for both events
      *
-     * @param $data
+     * @param       $data
+     * @param array $qualifyingResults
+     * @param array $raceResults
      *
      * @return array
      */
-    public function calculatePoints($data)
+    public function calculatePoints($data, $qualifyingResults = [], $raceResults = [])
     {
-        $qualifyingResults  = $this->_dataModel->getQualifyingResults($data['stage']);
-        $raceResults        = $this->_dataModel->getResults(null, null, $data['stage']);
+        $qualifyingResults  = empty($qualifyingResults)
+                                ? $this->_dataModel->getQualifyingResults($data['stage'])
+                                : $qualifyingResults;
+        $raceResults        = empty($raceResults)
+                                ? $this->_dataModel->getResults(null, null, $data['stage'])
+                                : $raceResults;
 
         $points = [];
+        $totalPoints = 0;
 
         if (!empty($qualifyingResults)) {
             $points += $this->pointCalculateMacro($qualifyingResults, $data, self::TYPE_QUALIFYING);
+            $totalPoints += !empty($points[self::TYPE_QUALIFYING]['totalPoints'])
+                    ? $points[self::TYPE_QUALIFYING]['totalPoints']
+                    : 0;
         }
 
         if (!empty($raceResults)) {
             $points += $this->pointCalculateMacro($raceResults, $data, self::TYPE_RACE);
+            $totalPoints += !empty($points[self::TYPE_RACE]['totalPoints'])
+                    ? $points[self::TYPE_RACE]['totalPoints']
+                    : 0;
         }
 
-        return $points;
+        return [
+            'points' => $points,
+            'stage'         => $this->_dataModel->getGrandPrixTitle($data['stage']),
+            'totalPoints'   => $totalPoints,
+        ];
     }
 
     /**
@@ -121,12 +138,18 @@ class PointsModel
      */
     private function pointCalculateMacro($data, $team, $type)
     {
-        $pilots = array_slice($team, 1, 2, true);
+        $pilots = [
+            'pilot1'    => $team['pilot1'],
+            'pilot2'    => $team['pilot2'],
+        ];
 
         $points = [
             $type => [
-                'team'      => 0,
-                'engine'    => 0,
+                'totalPoints'   => 0,
+                'points' => [
+                    'team'      => 0,
+                    'engine'    => 0,
+                ],
             ],
         ];
 
@@ -134,16 +157,23 @@ class PointsModel
 
             foreach ($pilots as $key => $pilot) {
                 if ($result['driverId'] === $pilot) {
-                    $points[$type][$key] = $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_DRIVER;
+                    $assignPoints = $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_DRIVER;
+                    $points[$type]['points'][$key] = $assignPoints;
+                    $points[$type]['totalPoints'] += $assignPoints;
                 }
             }
 
             if ($result['team'] === $team['team']) {
-                $points[$type]['team'] += $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_TEAM;
+                $assignPoints = $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_TEAM;
+                $points[$type]['points']['team'] += $assignPoints;
+                $points[$type]['totalPoints'] += $assignPoints;
+
             }
 
             if ($this->_dataModel->getEngineFromResultData($result['team']) === $team['engine']) {
-                $points[$type]['engine'] += $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_ENGINE;
+                $assignPoints = $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_ENGINE;
+                $points[$type]['points']['engine'] += $assignPoints;
+                $points[$type]['totalPoints'] += $assignPoints;
             }
         }
 
@@ -160,5 +190,45 @@ class PointsModel
                 return $this->getRacePoints($position);
             break;
         }
+    }
+
+    public function getBestTeam($stageUrl)
+    {
+        $qualifyingResults = $this->_dataModel->getQualifyingResults($stageUrl);
+        $raceResults       = $this->_dataModel->getResults(null, null, $stageUrl);
+
+        $drivers    = $this->_dataModel->getDrivers();
+        $drivers2   = $drivers;
+        $teams      = $this->_dataModel->getTeams();
+        $engines    = $this->_dataModel->getEngines();
+
+        $points = [];
+
+        if (!empty($qualifyingResults) && !empty($raceResults)) {
+
+            foreach ($drivers as $pilot1) {
+                foreach ($drivers2 as $pilot2) {
+                    if ($pilot1 === $pilot2) {
+                        continue;
+                    }
+                    foreach ($teams as $team) {
+                        foreach ($engines as $engine) {
+                            $bestTeam = [
+                                'pilot1' => $pilot1['driverId'],
+                                'pilot2' => $pilot2['driverId'],
+                                'team'   => $team['title'],
+                                'engine' => $engine['title'],
+                            ];
+                            $points[] = [
+                                'team'   => $bestTeam,
+                                'points' => $this->calculatePoints($bestTeam, $qualifyingResults, $raceResults),
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $points;
     }
 } 

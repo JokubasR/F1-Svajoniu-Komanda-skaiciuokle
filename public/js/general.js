@@ -20,4 +20,17 @@ $(function(){
             }
         })
     });
+
+    $('form#form-stage-results button[type="button"]').click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: $(this).parents('form').attr('data-url'),
+            data: $(this).parents('form').serializeArray(),
+            success: function (template) {
+                $('div#best-team-panel').html(template);
+            }
+        })
+    });
 });

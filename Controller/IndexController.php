@@ -44,11 +44,30 @@ class IndexController extends BaseController
     public function pointsAction()
     {
         if (!empty($_POST)) {
-            $points = $this->_pointsModel->calculatePoints($_POST);
+            try {
+                $points = $this->_pointsModel->calculatePoints($_POST);
+            } catch(\Exception $exception) {
+                $points = [];
+            }
         }
 
         die( $this->renderAjax('points',[
             'results'    => $points,
+        ]));
+    }
+
+    public function bestTeamAction()
+    {
+        if (!empty($_POST)) {
+            try {
+                $bestTeam = $this->_pointsModel->getBestTeam($_POST['stage']);
+            } catch (\Exception $exception) {
+                $bestTeam = [];
+            }
+        }
+die($bestTeam);
+        die($this->renderAjax('points', [
+            'bestTeam' => $bestTeam,
         ]));
     }
 } 

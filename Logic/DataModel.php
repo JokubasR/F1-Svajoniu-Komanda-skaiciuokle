@@ -22,6 +22,8 @@ class DataModel
 
     private $xPathDrivers   = "//ul[@class='driverMugShot']/li/div/p/a";
 
+    private $xPathRaceTitle = "//div[@class='raceResultsHeading']/h2/text()";
+
     private $teamEngines    = [
         'Mercedes' => [
             'Mercedes',
@@ -49,6 +51,7 @@ class DataModel
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function getGrandPrixs()
     {
@@ -61,6 +64,10 @@ class DataModel
         $xpath = new \DOMXPath($doc);
 
         $items = $xpath->query($this->xPathStages);
+
+        if (empty($items) || ! $items->length > 0) {
+            throw new \Exception('No results found', 202);
+        }
 
         $result = [];
         for ($i = 0; $i < $items->length; $i++) {
@@ -76,6 +83,7 @@ class DataModel
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function getTeams()
     {
@@ -88,6 +96,10 @@ class DataModel
         $xpath = new \DOMXPath($doc);
 
         $items = $xpath->query($this->xPathTeam);
+
+        if (empty($items) || ! $items->length > 0) {
+            throw new \Exception('No results found', 202);
+        }
 
         $result = [];
 
@@ -142,6 +154,10 @@ class DataModel
 
             $items = $xpath->query($this->xPathResults);
 
+            if (empty($items) || ! $items->length > 0) {
+                return [];
+            }
+
             $result = [];
 
             for ($i = 0; $i < $items->length; $i++) {
@@ -169,6 +185,7 @@ class DataModel
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function getDrivers()
     {
@@ -181,6 +198,10 @@ class DataModel
         $xpath = new \DOMXPath($doc);
 
         $items = $xpath->query($this->xPathDrivers);
+
+        if (empty($items) || ! $items->length > 0) {
+            throw new \Exception('No results found', 202);
+        }
 
         $result = [];
 
@@ -204,6 +225,12 @@ class DataModel
         return $result;
     }
 
+    /**
+     * @param $raceUlr
+     *
+     * @return array
+     * @throws \Exception
+     */
     public function getQualifyingResults($raceUlr)
     {
         /*
@@ -220,6 +247,10 @@ class DataModel
 
         $items = $xpath->query($this->xPathQualifyingLink);
 
+        if (empty($items) || ! $items->length > 0) {
+            throw new \Exception('No results found', 202);
+        }
+
         $qualifyingLink = $items->item(0)->nodeValue;
 
         /*
@@ -227,6 +258,27 @@ class DataModel
          */
 
         return $this->getResults(null, null, $qualifyingLink);
+    }
+
+    public function getGrandPrixTitle($stageUrl)
+    {
+        $data = $this->getContent(Settings::URL_HOST . $stageUrl);
+
+        $doc = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $doc->loadHTML($data);
+
+        $xpath = new \DOMXPath($doc);
+
+        $items = $xpath->query($this->xPathRaceTitle);
+
+        if (empty($items) || !$items->length > 0) {
+            throw new \Exception('No results found', 202);
+        }
+
+        $grandPrixTitle = $items->item(0)->nodeValue;
+
+        return $grandPrixTitle;
     }
 
     /**
