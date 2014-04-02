@@ -58,23 +58,31 @@ class PointsModel
         9   => 4,
         10  => 3,
         11  => 2,
-        12  => 2,
+        12  => 1,
     ];
 
     /**
-     * @return array
+     * @param $position
+     *
+     * @return int
      */
-    public function getQualifyingPoints()
+    public function getQualifyingPoints($position)
     {
-        return $this->pointsQualifying;
+        return array_key_exists($position, $this->pointsQualifying)
+                ? $this->pointsQualifying[$position]
+                : 0;
     }
 
     /**
-     * @return array
+     * @param $position
+     *
+     * @return int
      */
-    public function getRacePoints()
+    public function getRacePoints($position)
     {
-        return $this->pointsRace;
+        return array_key_exists($position, $this->pointsRace)
+            ? $this->pointsRace[$position]
+            : 0;
     }
 
     /**
@@ -126,29 +134,31 @@ class PointsModel
 
             foreach ($pilots as $key => $pilot) {
                 if ($result['driverId'] === $pilot) {
-                    $points[$type][$key] = $this->getPoints($type)[$result['position']] * self::POINTS_MULTIPLIER_DRIVER;
+                    $points[$type][$key] = $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_DRIVER;
                 }
             }
 
             if ($result['team'] === $team['team']) {
-                $points[$type]['team'] += $this->getPoints($type)[$result['position']] * self::POINTS_MULTIPLIER_TEAM;
+                $points[$type]['team'] += $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_TEAM;
             }
 
-            if ($this->_dataModel->engineHasTeam($team['engine'], $result['team'])) {
-                $points[$type]['engine'] += $this->getPoints($type)[$result['position']] * self::POINTS_MULTIPLIER_ENGINE;
+            if ($this->_dataModel->getEngineFromResultData($result['team']) === $team['engine']) {
+                $points[$type]['engine'] += $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_ENGINE;
             }
         }
-        d($team);
+
         return $points;
     }
 
-    private function getPoints($type)
+    private function getPoints($type, $position)
     {
         switch ($type) {
-            case self::TYPE_RACE:
-                return $this->getQualifyingPoints();
             case self::TYPE_QUALIFYING:
-                return $this->getRacePoints();
+                return $this->getQualifyingPoints($position);
+            break;
+            case self::TYPE_RACE:
+                return $this->getRacePoints($position);
+            break;
         }
     }
 } 

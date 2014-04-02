@@ -1,135 +1,91 @@
-<div class="jumbotron">
-    <h1>F1 Svajonių Komandos skaičiuoklė</h1>
+<form id="form-stage-results" class="form-horizontal" role="form" action="/index.php/points" enctype="multipart/form-data" method="post">
 
-    <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus
-        commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-
-<!--    <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>-->
-</div>
-
-<div class="row marketing">
-
-    <!--<form role="form">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Pilots Nr. 1</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+    <div class="form-group">
+        <label for="stage" class="col-sm-2 control-label">Etapas</label>
+        <div class="col-sm-10">
+            <select name="stage" id="stage" data-placeholder="Pasirinkite etapą" class="form-control" required="required">
+                <?php foreach ($stages as $stage) : ?>
+                    <option value="<?= $stage['link'] ?>"><?= $stage['title'] ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputFile">File input</label>
-            <input type="file" id="exampleInputFile">
+    </div>
 
-            <p class="help-block">Example block-level help text here.</p>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox"> Check me out
-            </label>
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>-->
+    <div class="form-group row" style="white-space: nowrap;">
 
-
-        <form action="index.php/points" method="post" role="form" enctype="multipart/form-data">
-
-            <div class="form-group col-lg-6">
-                <label for="stage">Etapas</label>
-                <select name="stage" id="stage" data-placeholder="Pasirinkite etapą" style="width: 200px;">
-                    <?php foreach ($stages as $stage) : ?>
-                        <option value="<?= $stage['link'] ?>"><?= $stage['title'] ?></option>
+        <div class="col-sm-6">
+            <label for="pilot1" class="col-sm-4 control-label">Pilotas Nr. 1</label>
+            <div class="col-sm-8">
+                <select name="pilot1" id="pilot-1" class="form-control"
+                        data-placeholder="Pasirinkite lenktytininką" required="required">
+                    <option></option>
+                    <?php foreach ($drivers as $team => $driver) : ?>
+                        <optgroup label="<?= $team ?>">
+                            <?php foreach ($driver as $driver) : ?>
+                                <option
+                                    value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
+                            <?php endforeach; ?>
+                        </optgroup>
                     <?php endforeach; ?>
                 </select>
             </div>
+        </div>
 
-            <div class="form-inline col-md-12">
-
-                <div class="form-group col-lg-6">
-                    <label for="pilot-1">Pilotas Nr. 1</label>
-                    <select name="pilot1" id="pilot-1" class="form-control" data-placeholder="Pasirinkite lenktytininką" style="width: 200px;">
-                        <option></option>
-                        <?php foreach ($drivers as $team => $driver) :?>
-                            <optgroup label="<?= $team?>">
-                                <?php foreach ($driver as $driver) : ?>
-                                    <option value="<?= $driver['driverId']?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title'])?></option>
-                                <?php endforeach; ?>
-                            </optgroup>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="form-group col-lg-6">
-                    <label for="pilot-2">Pilotas Nr. 2</label>
-                    <select name="pilot2" id="pilot-2" class="form-control" data-placeholder="Pasirinkite lenktytininką" style="width: 200px;">
-                        <option></option>
-                        <?php foreach ($drivers as $team => $driver) : ?>
-                            <optgroup label="<?= $team ?>">
-                                <?php foreach ($driver as $driver) : ?>
-                                    <option value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
-                                <?php endforeach; ?>
-                            </optgroup>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="form-inline col-md-12">
-
-                <div class="form-group col-lg-6">
-                    <label for="team">Komanda</label>
-                    <select name="team" id="team" data-placeholder="Pasirinkite komandą" style="width: 200px;">
-                        <option></option>
-                        <?php foreach ($teams as $team) : ?>
-                            <option value="<?= $team['title'] ?>"><?=$team['title']?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="form-group col-lg-6">
-                    <label for="engine">Variklis</label>
-                    <select name="engine" id="engine" data-placeholder="Pasirinkite variklį" style="width: 200px;">
-                        <option></option>
-                        <?php foreach ($engines as $engine => $teams) :?>
-                            <option value="<?=$engine?>"><?=$engine?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-            </div>
-
-            <button type="submit" class="btn-success">Skaičiuoti</button>
-
-        </form>
-<!--    <div class="form-group col-lg-6">-->
-<!--        <label for="pilot-2">Pilotas Nr. 2</label>-->
-<!--        <select name="pilot2" id="pilot-2" class="form-control">-->
-<!--            --><?php //foreach ($stages as $stage) : ?>
-<!--                <option value="--><?//= $stage['link'] ?><!--">--><?//= $stage['title'] ?><!--</option>-->
-<!--            --><?php //endforeach; ?>
-<!--        </select>-->
-<!--    </div>-->
-
-        <?php /*foreach ($teams as $team) :?>
-            <h2><?=$team['title']?></h2>
-            <img src="http://www.formula1.com<?=$team['image']?>" alt="<?=$team['title']?>"/>
-            <?php foreach ($team['members'] as $member) :?>
-                <img src="http://www.formula1.com<?=$member['image']?>" alt="<?=$member['title']?>"/>
-                <span><?=$member['title']?></span>
-            <?php endforeach; ?>
-        <?php endforeach; ?>
-
-        <ul>
-            <?php foreach ($results as $result) :?>
-                <li>
-                    <?php foreach ($result as $label => $value) :?>
-                        <strong><?=$label?></strong>: <span><?=$value?></span>
+        <div class="col-sm-6">
+            <label for="pilot2" class="col-sm-4 control-label">Pilotas Nr. 2</label>
+            <div class="col-sm-8">
+                <select name="pilot2" id="pilot-2" class="form-control"
+                        data-placeholder="Pasirinkite lenktytininką" required="required">
+                    <option></option>
+                    <?php foreach ($drivers as $team => $driver) : ?>
+                        <optgroup label="<?= $team ?>">
+                            <?php foreach ($driver as $driver) : ?>
+                                <option
+                                    value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
+                            <?php endforeach; ?>
+                        </optgroup>
                     <?php endforeach; ?>
-                </li>
-            <?php endforeach; */?>
-        </ul>
+                </select>
+            </div>
+        </div>
 
-</div>
+    </div>
 
+    <div class="form-group row">
+
+        <div class="col-sm-6">
+            <label for="team" class="col-sm-4 control-label">Komanda</label>
+
+            <div class="col-sm-8">
+                <select name="team" id="team" data-placeholder="Pasirinkite komandą" class="form-control" required="required">
+                    <option></option>
+                    <?php foreach ($teams as $team) :?>
+                        <option value="<?= $team['title'] ?>"><?= $team['title'] ?></option>
+                    <?php endforeach;  ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <label for="engine" class="col-sm-4 control-label">Variklis</label>
+
+            <div class="col-sm-8">
+                <select name="engine" id="engine" data-placeholder="Pasirinkite variklį" class="form-control" required="required">
+                    <option></option>
+                    <?php foreach ($engines as $engine => $teams) : ?>
+                        <option value="<?= $engine ?>"><?= $engine  ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success btn-block">Skaičiuoti</button>
+        </div>
+    </div>
+</form>
+
+<div id="results-panel"></div>

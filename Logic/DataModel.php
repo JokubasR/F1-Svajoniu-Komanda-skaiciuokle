@@ -153,9 +153,14 @@ class DataModel
                     'driverId'  => $driverId,
                     'position'  => $item->childNodes->item(0)->nodeValue,
                     'title'     => $item->childNodes->item(4)->firstChild->nodeValue,
-                    'points'    => $item->childNodes->item(12)->nodeValue,
-                    'team'      => $item->childNodes->item(6)->firstChild->nodeValue,
+//                    'points'    => $item->childNodes->item(12)->nodeValue,
+                    'team'      => $item
+                            ->childNodes
+                            ->item(6)
+                            ->nodeValue,
                 ];
+//                d($result[$driverId]);
+//                d($item->childNodes->item(6));
             }
 
             return $result;
@@ -232,9 +237,44 @@ class DataModel
         return $this->teamEngines;
     }
 
+    /**
+     * Checks if team is assigned to given engine
+     * @param $engine
+     * @param $team
+     *
+     * @return bool
+     */
     public function engineHasTeam($engine, $team)
     {
         return in_array($team, $this->teamEngines[$engine]);
+    }
+
+    /**
+     * It could be:
+     *  * Ferrari
+     *  * Sauber-Ferrari
+     *  * McLaren-Mercedes
+     *  * Red Bull Racing-Renault
+     * {team}-{engine}
+     *
+     * @param $teamTitle
+     *
+     * @return string
+     */
+    public function getEngineFromResultData($teamTitle)
+    {
+        $words = explode(' ', $teamTitle);
+
+        $engine = array_pop($words);
+
+        /*
+         * It could happen, that $engine value is Racing-Renault (if RBR is the team).
+         */
+        if ($dashPosition = strpos($engine, '-')) {
+            $engine = substr($engine, $dashPosition + 1);
+        }
+
+        return $engine;
     }
 
 

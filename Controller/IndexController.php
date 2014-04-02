@@ -43,13 +43,12 @@ class IndexController extends BaseController
 
     public function pointsAction()
     {
-        var_dump($_POST);
         if (!empty($_POST)) {
             $points = $this->_pointsModel->calculatePoints($_POST);
         }
 
-        return $this->render('points',[
-            'points'    => $points,
-        ]);
+        die( $this->renderAjax('points',[
+            'results'    => $points,
+        ]));
     }
 } 
