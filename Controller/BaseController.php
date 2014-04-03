@@ -20,7 +20,7 @@ abstract class BaseController
      * @return bool
      * @throws \Exception
      */
-    protected function render($template, $variables = [])
+    protected function render($template, $variables = array())
     {
         if (!preg_match("/\.(?i)(htm?l|phtml)$/", $template)) {
             $template .= '.phtml';
@@ -46,7 +46,7 @@ abstract class BaseController
         return true;
     }
 
-    protected function renderAjax($template, $variables = [])
+    protected function renderAjax($template, $variables = array()
     {
         /**@todo refactor this */
 
