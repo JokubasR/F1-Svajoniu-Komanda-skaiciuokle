@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>F1 Svajonių Komanda | Skaičiuoklė</title>
+    <title><?=translate("layout.title")?></title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/public/css/bootstrap.min.css">
@@ -24,11 +24,11 @@
 
 <div class="container">
     <div class="header">
-        <h2 class="text-muted">F1 Svajonių Komandos skaičiuoklė</h2>
+        <h2 class="text-muted"><?= translate("layout.header") ?></h2>
     </div>
 
     <div class="jumbotron">
-        <p class="lead">Rezulatai imami tiesiogiai iš formula1.com tinklapio. Pateikti skaičiavimai gali nesutapti su F-1.lt rodomais rezultatais. Skaičiuojant taškus, yra atsižvelgiama yra teisėjų priimtus sprendimus po lenktynių. </p>
+        <p class="lead"><?=translate('layout.main.message')?></p>
     </div>
 
     <div class="container-fluid">
@@ -36,7 +36,7 @@
     </div>
 
     <div class="footer">
-        <p>&copy; <a href="http://lt.linkedin.com/in/jokubasramanauskas" target="_blank">Jokūbas Ramanauskas</a> 2014</p>
+        <p>&copy; <a href="http://lt.linkedin.com/in/jokubasramanauskas" target="_blank">Jokūbas Ramanauskas</a> <?=date('Y')?></p>
     </div>
 
 </div>

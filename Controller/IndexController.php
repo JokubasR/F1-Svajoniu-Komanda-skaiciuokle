@@ -31,11 +31,18 @@ class IndexController extends BaseController
         $engines    = $this->_dataModel->getEngines();
         $drivers    = $this->_dataModel->getDrivers();
 
+        $userTeam = [];
+
+        if (isset($_COOKIE['team'])) {
+            $userTeam = unserialize($_COOKIE['team']);
+        }
+
         return $this->render('index', [
             'stages'    => $stages,
             'teams'     => $teams,
             'engines'   => $engines,
             'drivers'   => $drivers,
+            'userTeam'  => $userTeam,
         ]);
     }
 
@@ -44,6 +51,7 @@ class IndexController extends BaseController
         if (!empty($_POST)) {
             try {
                 $points = $this->_pointsModel->calculatePoints($_POST);
+                setcookie('team', serialize($_POST), 0, '/');
             } catch(\Exception $exception) {
                 $points = [];
             }

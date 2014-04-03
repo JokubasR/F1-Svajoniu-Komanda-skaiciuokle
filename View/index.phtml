@@ -3,7 +3,7 @@
     <div class="form-group">
         <label for="stage" class="col-sm-2 control-label"><?=translate('title.stage')?></label>
         <div class="col-sm-10">
-            <select name="stage" id="stage" data-placeholder="Pasirinkite etapą" class="form-control" required="required">
+            <select name="stage" id="stage" data-placeholder="<?= translate('placeholder.stage') ?>" class="form-control" required="required">
                 <?php foreach ($stages as $stage) : ?>
                     <option value="<?= $stage['link'] ?>"><?= $stage['title'] ?></option>
                 <?php endforeach; ?>
@@ -22,8 +22,7 @@
                     <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
                             <?php foreach ($teamDrivers as $driver) : ?>
-                                <option
-                                    value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
+                                <option <?=!empty($userTeam['pilot1']) && $userTeam['pilot1'] === $driver['driverId'] ? 'selected' : null?> value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
                             <?php endforeach; ?>
                         </optgroup>
                     <?php endforeach; ?>
@@ -40,8 +39,7 @@
                     <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
                             <?php foreach ($teamDrivers as $driver) : ?>
-                                <option
-                                    value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
+                                <option <?= !empty($userTeam['pilot2']) && $userTeam['pilot2'] === $driver['driverId'] ? 'selected' : null ?> value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
                             <?php endforeach; ?>
                         </optgroup>
                     <?php endforeach; ?>
@@ -60,7 +58,7 @@
                 <select name="team" id="team" data-placeholder="<?= translate('placeholder.team') ?>" class="form-control" required="required">
                     <option></option>
                     <?php foreach ($teams as $team) :?>
-                        <option value="<?= $team['title'] ?>"><?= $team['title'] ?></option>
+                        <option <?= !empty($userTeam['team']) && $userTeam['team'] === $team['title'] ? 'selected' : null ?> value="<?= $team['title'] ?>"><?= $team['title'] ?></option>
                     <?php endforeach;  ?>
                 </select>
             </div>
@@ -73,7 +71,7 @@
                 <select name="engine" id="engine" data-placeholder="<?= translate('placeholder.engine') ?>" class="form-control" required="required">
                     <option></option>
                     <?php foreach ($engines as $engine => $teams) : ?>
-                        <option value="<?= $engine ?>"><?= $engine  ?></option>
+                        <option <?= !empty($userTeam['engine']) && $userTeam['engine'] === $engine ? 'selected' : null ?> value="<?= $engine ?>"><?= $engine  ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
