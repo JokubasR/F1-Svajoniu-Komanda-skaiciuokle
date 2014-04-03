@@ -123,7 +123,7 @@ class PointsModel
 
         return [
             'points' => $points,
-            'stage'         => null === $stageTitle
+            'stage'  => null === $stageTitle
                         ? $this->_dataModel->getGrandPrixTitle($data['stage'])
                         : $stageTitle,
             'totalPoints'   => $totalPoints,
@@ -205,7 +205,6 @@ class PointsModel
         $teams      = $this->_dataModel->getTeams();
         $engines    = $this->_dataModel->getEngines();
 
-        $points = [];
         $bestTeam = [];
 
         if (!empty($qualifyingResults) && !empty($raceResults)) {
@@ -220,13 +219,15 @@ class PointsModel
                             foreach ($teams as $team) {
                                 foreach ($engines as $engine => $engineTeams) {
                                     $currentTeam = [
-                                        'pilot1' => $pilot1['driverId'],
-                                        'pilot2' => $pilot2['driverId'],
-                                        'team'   => $team['title'],
-                                        'engine' => $engine,
+                                        'team'  => [
+                                            'pilot1' => $pilot1['driverId'],
+                                            'pilot2' => $pilot2['driverId'],
+                                            'team'   => $team['title'],
+                                            'engine' => $engine,
+                                        ],
                                         'stage'  => $stageUrl,
                                     ];
-                                    $point = $this->calculatePoints($currentTeam, $qualifyingResults, $raceResults, 'BEST TEAM');
+                                    $point = $this->calculatePoints($currentTeam['team'], $qualifyingResults, $raceResults, 'BEST TEAM');
 
                                     if (empty($bestTeam)) {
                                         $bestTeam = $currentTeam + ['points' => $point['totalPoints']];
@@ -240,6 +241,9 @@ class PointsModel
                 }
             }
         }
+
+        $bestTeam['team']['pilot1'] = $this->_dataModel->findDriverTitleById($bestTeam['team']['pilot1'], $drivers);
+        $bestTeam['team']['pilot2'] = $this->_dataModel->findDriverTitleById($bestTeam['team']['pilot2'], $drivers);
 
         return $bestTeam;
     }

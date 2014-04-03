@@ -4,5 +4,11 @@
     "points.team": "Komanda",
     "points.engine": "Variklis",
     "points.pilot1": "Pilotas Nr. 1",
-    "points.pilot2": "Pilotas Nr. 2"
+    "points.pilot2": "Pilotas Nr. 2",
+
+    "alert.error":  "Klaida!",
+    "error.no.data.found": "Negauti šio etapo duomenys.",
+    "error.no.best.team.found": " Nepavyko rasti geriausios šio etapo komandos.",
+
+    "total.points": "Viso taškų: "
 }

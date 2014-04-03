@@ -215,7 +215,7 @@ class DataModel
             $driverData = explode(' ', trim($driverData));
 
             $driverId = array_shift($driverData);
-            $result[$team][] = [
+            $result[$team][$driverId] = [
                 'driverId'  => $driverId,
                 'title'     => implode(' ', $driverData),
                 'team'      => $team,
@@ -329,6 +329,39 @@ class DataModel
         return $engine;
     }
 
+    /**
+     * Finds driver by his driverId
+     *
+     * @param       $driverId
+     * @param array $drivers
+     *
+     * @return mixed
+     */
+    public function findDriverById($driverId, $drivers = [])
+    {
+        $drivers = empty($drivers)
+                    ? $this->getDrivers()
+                    : $drivers;
+
+        foreach ($drivers as $teamDrivers) {
+            if (array_key_exists($driverId, $teamDrivers)) {
+                return $teamDrivers[$driverId];
+            }
+        }
+
+        return $driverId;
+    }
+
+    public function findDriverTitleById($driverId, $drivers = [])
+    {
+        $data = $this->findDriverById($driverId, $drivers);
+
+        if (is_array($data)) {
+            return $data['title'];
+        }
+
+        return $data;
+    }
 
     /**
      * @param $url

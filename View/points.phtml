@@ -2,7 +2,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             <?=(!empty($results['stage']) ? $results['stage'] : "ETAPO REZULTATAI") ?>
-            <span class="pull-right"><strong>Viso taškų: </strong><span
+            <span class="pull-right"><strong><?=translate('total.points')?></strong><span
                     class="badge alert-success"><?= !empty($results['totalPoints']) ? $results['totalPoints'] : 0 ?></span></span>
         </h3>
     </div>
@@ -13,7 +13,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             <?= translate('points.' . $eventType) ?>
-                            <span class="pull-right"><strong>Viso taškų: </strong><span
+                            <span class="pull-right"><strong><?= translate('total.points') ?></strong><span
                                     class="badge alert-success"><?= $eventResults['totalPoints'] ?></span></span>
                         </h3>
                     </div>
@@ -28,7 +28,7 @@
             <?php endforeach; ?>
         <?php else : ?>
             <div class="alert alert-danger">
-                <strong>Klaida!</strong> Negauti šio etapo duomenys.
+                <strong><?=translate('alert.error')?></strong> <?=translate('error.no.data.found')?>
             </div>
         <?php endif; ?>
 

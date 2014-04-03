@@ -28,10 +28,8 @@ class IndexController extends BaseController
     {
         $stages     = $this->_dataModel->getGrandPrixs();
         $teams      = $this->_dataModel->getTeams();
-//        $results    = $this->_dataModel->getResults('Malaysia', $stages);
         $engines    = $this->_dataModel->getEngines();
         $drivers    = $this->_dataModel->getDrivers();
-//        $qualifyingResult = $this->_dataModel->getQualifyingResults($stages['Malaysia']['link']);
 
         return $this->render('index', [
             'stages'    => $stages,
@@ -61,12 +59,13 @@ class IndexController extends BaseController
         if (!empty($_POST)) {
             try {
                 $bestTeam = $this->_pointsModel->getBestTeam($_POST['stage']);
+                $bestTeam['stage']  = $this->_dataModel->getGrandPrixTitle($bestTeam['stage']);
             } catch (\Exception $exception) {
                 $bestTeam = [];
             }
         }
-dd($bestTeam);
-        die($this->renderAjax('points', [
+
+        die($this->renderAjax('best-team', [
             'bestTeam' => $bestTeam,
         ]));
     }
