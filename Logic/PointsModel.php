@@ -168,7 +168,7 @@ class PointsModel
                 }
             }
 
-            if ($result['team'] === $team['team']) {
+            if ($this->_dataModel->getTeamFromResultData($result['team']) === $team['team']) {
                 $assignPoints = $this->getPoints($type, $result['position']) * self::POINTS_MULTIPLIER_TEAM;
                 $points[$type]['points']['team'] += $assignPoints;
                 $points[$type]['totalPoints'] += $assignPoints;

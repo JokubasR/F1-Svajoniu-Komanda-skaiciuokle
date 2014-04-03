@@ -1,7 +1,7 @@
 {
     "layout.title": "F1 Svajonių Komanda | Skaičiuoklė",
     "layout.header": "F1 Svajonių Komandos skaičiuoklė",
-    "layout.main.message": "Rezulatai imami tiesiogiai iš formula1.com tinklapio. Pateikti skaičiavimai gali nesutapti su F-1.lt rodomais rezultatais. Skaičiuojant taškus yra atsižvelgiama teisėjų priimtus sprendimus po lenktynių. Tai yra pagrindinė priežastis, dėl ko paskaičiuoti taškai gali nesutapti.",
+    "layout.main.message": "Rezultatai yra imami tiesiogiai iš formula1.com tinklapio. Pateikti skaičiavimai gali nesutapti su F-1.lt rodomais rezultatais. Skaičiuojant taškus yra atsižvelgiama į teisėjų priimtus sprendimus po lenktynių. Tai yra pagrindinė priežastis, dėl ko paskaičiuoti taškai gali nesutapti.",
 
     "points.race": "Lenktynės",
     "points.qualifying": "Kvalifikacija",

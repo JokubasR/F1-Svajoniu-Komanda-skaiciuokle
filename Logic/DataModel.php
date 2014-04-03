@@ -327,6 +327,20 @@ class DataModel
     }
 
     /**
+     * Same as getEngineFromResultData
+     * Except that we need to strip the engine part
+     *
+     * @param $teamTitle
+     *
+     * @return mixed
+     */
+    public function getTeamFromResultData($teamTitle)
+    {
+        $team = explode('-', $teamTitle);
+        return array_shift($team);
+    }
+
+    /**
      * Finds driver by his driverId
      *
      * @param       $driverId
