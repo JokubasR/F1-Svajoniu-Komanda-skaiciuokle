@@ -171,7 +171,7 @@ the specific language governing permissions and limitations under the Apache Lic
      */
     function splitVal(string, separator) {
         var val, i, l;
-        if (string === null || string.length < 1) return [];
+        if (string === null || string.length < 1) return array();
         val = string.split(separator);
         for (i = 0, l = val.length; i < l; i = i + 1) val[i] = $.trim(val[i]);
         return val;
@@ -520,7 +520,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     for (attr in datum) {
                         if (datum.hasOwnProperty(attr)) group[attr]=datum[attr];
                     }
-                    group.children=[];
+                    group.children=array();
                     $(datum.children).each2(function(i, childDatum) { process(childDatum, group.children); });
                     if (group.children.length || query.matcher(t, text(group), datum)) {
                         collection.push(group);
@@ -1004,7 +1004,7 @@ the specific language governing permissions and limitations under the Apache Lic
                         }
                         if (opts.initSelection === undefined) {
                             opts.initSelection = function (element, callback) {
-                                var data = [];
+                                var data = array();
                                 $(splitVal(element.val(), opts.separator)).each(function () {
                                     var obj = { id: this, text: this },
                                         tags = opts.tags;
@@ -2501,7 +2501,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 // install the selection initializer
                 opts.initSelection = function (element, callback) {
 
-                    var data = [];
+                    var data = array();
 
                     element.find("option").filter(function() { return this.selected && !this.disabled }).each2(function (i, elm) {
                         data.push(self.optionToData(elm));
@@ -2513,7 +2513,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 opts.initSelection = opts.initSelection || function (element, callback) {
                     var ids = splitVal(element.val(), opts.separator);
                     //search in data by array of ids, storing matching items in a list
-                    var matches = [];
+                    var matches = array();
                     opts.query({
                         matcher: function(term, text, el){
                             var is_match = $.grep(ids, function(id) {
@@ -2527,7 +2527,7 @@ the specific language governing permissions and limitations under the Apache Lic
                         callback: !$.isFunction(callback) ? $.noop : function() {
                             // reorder matches based on the order they appear in the ids array because right now
                             // they are in the order in which they appear in data array
-                            var ordered = [];
+                            var ordered = array();
                             for (var i = 0; i < ids.length; i++) {
                                 var id = ids[i];
                                 for (var j = 0; j < matches.length; j++) {
@@ -3117,7 +3117,7 @@ the specific language governing permissions and limitations under the Apache Lic
             if (this.select) {
                 this.select.val(val);
             } else {
-                unique = [];
+                unique = array();
                 // filter out duplicates
                 $(val).each(function () {
                     if (indexOf(this, unique) < 0) unique.push(this);
@@ -3158,7 +3158,7 @@ the specific language governing permissions and limitations under the Apache Lic
             }
 
             oldData=this.data();
-            if (!oldData.length) oldData=[];
+            if (!oldData.length) oldData=array();
 
             // val is an id. !val is true for [undefined,null,'',0] - 0 is legal
             if (!val && val !== 0) {
@@ -3239,7 +3239,7 @@ the specific language governing permissions and limitations under the Apache Lic
                      .get();
             } else {
                 old = this.data();
-                if (!values) { values = []; }
+                if (!values) { values = array(); }
                 ids = $.map(values, function(e) { return self.opts.id(e); });
                 this.setVal(ids);
                 this.updateSelection(values);
@@ -3319,7 +3319,7 @@ the specific language governing permissions and limitations under the Apache Lic
         containerCssClass: "",
         dropdownCssClass: "",
         formatResult: function(result, container, query, escapeMarkup) {
-            var markup=[];
+            var markup=array();
             markMatch(result.text, query.term, markup, escapeMarkup);
             return markup.join("");
         },

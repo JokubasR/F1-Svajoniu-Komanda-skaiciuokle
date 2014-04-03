@@ -31,19 +31,19 @@ class IndexController extends BaseController
         $engines    = $this->_dataModel->getEngines();
         $drivers    = $this->_dataModel->getDrivers();
 
-        $userTeam = [];
+        $userTeam = array();
 
         if (isset($_COOKIE['team'])) {
             $userTeam = unserialize($_COOKIE['team']);
         }
 
-        return $this->render('index', [
+        return $this->render('index', array(
             'stages'    => $stages,
             'teams'     => $teams,
             'engines'   => $engines,
             'drivers'   => $drivers,
             'userTeam'  => $userTeam,
-        ]);
+        ));
     }
 
     public function pointsAction()
@@ -53,13 +53,13 @@ class IndexController extends BaseController
                 $points = $this->_pointsModel->calculatePoints($_POST);
                 setcookie('team', serialize($_POST), 0, '/');
             } catch(\Exception $exception) {
-                $points = [];
+                $points = array();
             }
         }
 
-        die( $this->renderAjax('points',[
+        die( $this->renderAjax('points', array(
             'results'    => $points,
-        ]));
+        )));
     }
 
     public function bestTeamAction()
@@ -69,12 +69,12 @@ class IndexController extends BaseController
                 $bestTeam = $this->_pointsModel->getBestTeam($_POST['stage']);
                 $bestTeam['stage']  = $this->_dataModel->getGrandPrixTitle($bestTeam['stage']);
             } catch (\Exception $exception) {
-                $bestTeam = [];
+                $bestTeam = array();
             }
         }
 
-        die($this->renderAjax('best-team', [
+        die($this->renderAjax('best-team', array(
             'bestTeam' => $bestTeam,
-        ]));
+        )));
     }
 } 

@@ -24,25 +24,25 @@ class DataModel
 
     private $xPathRaceTitle = "//div[@class='raceResultsHeading']/h2/text()";
 
-    private $teamEngines    = [
-        'Mercedes' => [
+    private $teamEngines    = array(
+        'Mercedes' => array(
             'Mercedes',
             'McLaren',
             'Williams',
             'Force India',
-        ],
-        'Renault' => [
+        ),
+        'Renault' => array(
             'Red Bull Racing',
             'Lotus',
             'Toro Rosso',
             'Caterham',
-        ],
-        'Ferrari' => [
+        ),
+        'Ferrari' => array(
             'Ferrari',
             'Sauber',
             'Marussia',
-        ],
-    ];
+        ),
+    );
 
     public function __construct()
     {
@@ -69,13 +69,13 @@ class DataModel
             throw new \Exception('No results found', 202);
         }
 
-        $result = [];
+        $result = array();
         for ($i = 0; $i < $items->length; $i++) {
             $item = $items->item($i);
-            $result[$item->nodeValue] = [
+            $result[$item->nodeValue] = array(
                 'link'  => $item->attributes->getNamedItem('href')->nodeValue,
                 'title' => $item->nodeValue,
-            ];
+            );
         }
 
         return $result;
@@ -101,26 +101,26 @@ class DataModel
             throw new \Exception('No results found', 202);
         }
 
-        $result = [];
+        $result = array();
 
         for ($i = 0; $i < $items->length; $i++) {
             $item     = $items->item($i)->childNodes->item(1);
             $team     = $items->item($i)->childNodes->item(3);
 
-            $result[] = [
+            $result[] = array(
                 'title' => $item->childNodes->item(1)->attributes->getNamedItem('alt')->nodeValue,
                 'image' => $team->childNodes->item(1)->childNodes->item(1)->attributes->getNamedItem('src')->nodeValue,
-                'members' => [
-                    [
+                'members' => array(
+                    array(
                         'title' => $item->childNodes->item(2)->attributes->getNamedItem('alt')->nodeValue,
                         'image' => $item->childNodes->item(2)->attributes->getNamedItem('src')->nodeValue,
-                    ],
-                    [
+                    ),
+                    array(
                         'title' => $item->childNodes->item(3)->attributes->getNamedItem('alt')->nodeValue,
                         'image' => $item->childNodes->item(3)->attributes->getNamedItem('src')->nodeValue,
-                    ]
-                ],
-            ];
+                    )
+                ),
+            );
         }
 
         return $result;
@@ -133,7 +133,7 @@ class DataModel
      *
      * @return array
      */
-    public function getResults($stage = "", $stages = [], $stageUrl = null)
+    public function getResults($stage = "", $stages = array(), $stageUrl = null)
     {
         if (empty($stages) && !empty($stage)) {
             $stages = $this->getGrandPrixs();
@@ -155,28 +155,25 @@ class DataModel
             $items = $xpath->query($this->xPathResults);
 
             if (empty($items) || ! $items->length > 0) {
-                return [];
+                return array();
             }
 
-            $result = [];
+            $result = array();
 
             for ($i = 0; $i < $items->length; $i++) {
                 $item = $items->item($i);
 
                 $driverId = $item->childNodes->item(2)->nodeValue;
 
-                $result[$driverId] = [
+                $result[$driverId] = array(
                     'driverId'  => $driverId,
                     'position'  => $item->childNodes->item(0)->nodeValue,
                     'title'     => $item->childNodes->item(4)->firstChild->nodeValue,
-//                    'points'    => $item->childNodes->item(12)->nodeValue,
                     'team'      => $item
                             ->childNodes
                             ->item(6)
                             ->nodeValue,
-                ];
-//                d($result[$driverId]);
-//                d($item->childNodes->item(6));
+                );
             }
 
             return $result;
@@ -203,7 +200,7 @@ class DataModel
             throw new \Exception('No results found', 202);
         }
 
-        $result = [];
+        $result = array();
 
         for ($i = 0; $i < $items->length; $i++) {
             $item = $items->item($i);
@@ -215,11 +212,11 @@ class DataModel
             $driverData = explode(' ', trim($driverData));
 
             $driverId = array_shift($driverData);
-            $result[$team][$driverId] = [
+            $result[$team][$driverId] = array(
                 'driverId'  => $driverId,
                 'title'     => implode(' ', $driverData),
                 'team'      => $team,
-            ];
+            );
         }
 
         return $result;
@@ -337,7 +334,7 @@ class DataModel
      *
      * @return mixed
      */
-    public function findDriverById($driverId, $drivers = [])
+    public function findDriverById($driverId, $drivers =  array())
     {
         $drivers = empty($drivers)
                     ? $this->getDrivers()
@@ -352,7 +349,7 @@ class DataModel
         return $driverId;
     }
 
-    public function findDriverTitleById($driverId, $drivers = [])
+    public function findDriverTitleById($driverId, $drivers =  array())
     {
         $data = $this->findDriverById($driverId, $drivers);
 

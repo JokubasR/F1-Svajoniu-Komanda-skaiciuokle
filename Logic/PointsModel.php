@@ -31,7 +31,7 @@ class PointsModel
      * Place => points
      * @var array
      */
-    private $pointsQualifying = [
+    private $pointsQualifying = array(
         1   => 10,
         2   => 8,
         3   => 6,
@@ -40,13 +40,13 @@ class PointsModel
         6   => 3,
         7   => 2,
         8   => 1,
-    ];
+    );
 
     /**
      * Place => points
      * @var array
      */
-    private $pointsRace = [
+    private $pointsRace = array(
         1   => 25,
         2   => 18,
         3   => 15,
@@ -59,7 +59,7 @@ class PointsModel
         10  => 3,
         11  => 2,
         12  => 1,
-    ];
+    );
 
     /**
      * @param $position
@@ -95,7 +95,7 @@ class PointsModel
      *
      * @return array
      */
-    public function calculatePoints($data, $qualifyingResults = [], $raceResults = [], $stageTitle = null)
+    public function calculatePoints($data, $qualifyingResults = array(), $raceResults = array(), $stageTitle = null)
     {
         $qualifyingResults  = empty($qualifyingResults)
                                 ? $this->_dataModel->getQualifyingResults($data['stage'])
@@ -104,7 +104,7 @@ class PointsModel
                                 ? $this->_dataModel->getResults(null, null, $data['stage'])
                                 : $raceResults;
 
-        $points = [];
+        $points = array();
         $totalPoints = 0;
 
         if (!empty($qualifyingResults)) {
@@ -121,13 +121,13 @@ class PointsModel
                     : 0;
         }
 
-        return [
+        return array(
             'points' => $points,
             'stage'  => null === $stageTitle
                         ? $this->_dataModel->getGrandPrixTitle($data['stage'])
                         : $stageTitle,
             'totalPoints'   => $totalPoints,
-        ];
+        );
     }
 
     /**
@@ -141,22 +141,22 @@ class PointsModel
      */
     private function pointCalculateMacro($data, $team, $type)
     {
-        $pilots = [
+        $pilots = array(
             'pilot1'    => $team['pilot1'],
             'pilot2'    => $team['pilot2'],
-        ];
+        );
 
-        $points = [
-            $type => [
+        $points = array(
+            $type => array(
                 'totalPoints'   => 0,
-                'points' => [
+                'points' => array(
                     'team'      => 0,
                     'engine'    => 0,
                     'pilot1'    => 0,
                     'pilot2'    => 0,
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
 
         foreach ($data as $result) {
 
@@ -207,7 +207,7 @@ class PointsModel
         $teams      = $this->_dataModel->getTeams();
         $engines    = $this->_dataModel->getEngines();
 
-        $bestTeam = [];
+        $bestTeam = array();
 
         if (!empty($qualifyingResults) && !empty($raceResults)) {
 
@@ -220,22 +220,22 @@ class PointsModel
                             }
                             foreach ($teams as $team) {
                                 foreach ($engines as $engine => $engineTeams) {
-                                    $currentTeam = [
-                                        'team'  => [
+                                    $currentTeam = array(
+                                        'team'  => array(
                                             'pilot1' => $pilot1['driverId'],
                                             'pilot2' => $pilot2['driverId'],
                                             'team'   => $team['title'],
                                             'engine' => $engine,
-                                        ],
+                                        ),
                                         'stage'  => $stageUrl,
-                                    ];
+                                    );
                                     $point = $this->calculatePoints($currentTeam['team'], $qualifyingResults, $raceResults, 'BEST TEAM');
 
                                     if (empty($bestTeam)) {
-                                        $bestTeam = $currentTeam + ['points' => $point['totalPoints']];
+                                        $bestTeam = $currentTeam + array('points' => $point['totalPoints']);
                                     }
                                     if ($point['totalPoints'] > $bestTeam['points']) {
-                                        $bestTeam = $currentTeam + ['points' => $point['totalPoints']];                                    }
+                                        $bestTeam = $currentTeam + array('points' => $point['totalPoints']);                                    }
                                 }
                             }
                         }
