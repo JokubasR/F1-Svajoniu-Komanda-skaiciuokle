@@ -46,7 +46,7 @@ abstract class BaseController
         return true;
     }
 
-    protected function renderAjax($template, $variables = array()
+    protected function renderAjax($template, $variables = array())
     {
         /**@todo refactor this */
 
