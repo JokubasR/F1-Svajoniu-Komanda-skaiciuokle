@@ -10,5 +10,21 @@
     "error.no.data.found": "Negauti šio etapo duomenys.",
     "error.no.best.team.found": " Nepavyko rasti geriausios šio etapo komandos.",
 
-    "total.points": "Viso taškų: "
+    "total.points": "Viso taškų: ",
+
+    "title": "Etapas",
+
+    "label.pilot.1": "Pilotas Nr. 1",
+    "label.pilot.2": "Pilotas Nr. 2",
+    "label.team": "Komanda",
+    "label.engine": "Variklis",
+
+    "button.calculate.loading": "Skaičiuojama...",
+    "button.calculate": "Skaičiuoti",
+    "button.best.team.loading": "Ieškoma...",
+    "button.best.team": "Rasti geriausią etapo komandą",
+
+    "placeholder.team": "Įveskite komandą",
+    "placeholder.engine": "Įveskite variklį",
+    "placeholder.pilot": "Įveskite pilotą"
 }

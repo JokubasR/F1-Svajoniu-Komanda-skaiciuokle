@@ -1,7 +1,7 @@
 <form id="form-stage-results" class="form-horizontal" role="form" action="/index.php/points" enctype="multipart/form-data" method="post" data-url="/index.php/best-team">
 
     <div class="form-group">
-        <label for="stage" class="col-sm-2 control-label">Etapas</label>
+        <label for="stage" class="col-sm-2 control-label"><?=translate('title.stage')?></label>
         <div class="col-sm-10">
             <select name="stage" id="stage" data-placeholder="Pasirinkite etapą" class="form-control" required="required">
                 <?php foreach ($stages as $stage) : ?>
@@ -14,10 +14,10 @@
     <div class="form-group row" style="white-space: nowrap;">
 
         <div class="col-sm-6">
-            <label for="pilot1" class="col-sm-4 control-label">Pilotas Nr. 1</label>
+            <label for="pilot1" class="col-sm-4 control-label"><?=translate('label.pilot.1')?></label>
             <div class="col-sm-8">
                 <select name="pilot1" id="pilot-1" class="form-control"
-                        data-placeholder="Pasirinkite lenktytininką" required="required">
+                        data-placeholder="<?= translate('placeholder.pilot') ?>" required="required">
                     <option></option>
                     <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
@@ -32,10 +32,10 @@
         </div>
 
         <div class="col-sm-6">
-            <label for="pilot2" class="col-sm-4 control-label">Pilotas Nr. 2</label>
+            <label for="pilot2" class="col-sm-4 control-label"><?= translate('label.pilot.2') ?></label>
             <div class="col-sm-8">
                 <select name="pilot2" id="pilot-2" class="form-control"
-                        data-placeholder="Pasirinkite lenktytininką" required="required">
+                        data-placeholder="<?= translate('placeholder.pilot') ?>" required="required">
                     <option></option>
                     <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
@@ -54,10 +54,10 @@
     <div class="form-group row">
 
         <div class="col-sm-6">
-            <label for="team" class="col-sm-4 control-label">Komanda</label>
+            <label for="team" class="col-sm-4 control-label"><?= translate('label.team') ?></label>
 
             <div class="col-sm-8">
-                <select name="team" id="team" data-placeholder="Pasirinkite komandą" class="form-control" required="required">
+                <select name="team" id="team" data-placeholder="<?= translate('placeholder.team') ?>" class="form-control" required="required">
                     <option></option>
                     <?php foreach ($teams as $team) :?>
                         <option value="<?= $team['title'] ?>"><?= $team['title'] ?></option>
@@ -67,10 +67,10 @@
         </div>
 
         <div class="col-sm-6">
-            <label for="engine" class="col-sm-4 control-label">Variklis</label>
+            <label for="engine" class="col-sm-4 control-label"><?= translate('label.engine') ?></label>
 
             <div class="col-sm-8">
-                <select name="engine" id="engine" data-placeholder="Pasirinkite variklį" class="form-control" required="required">
+                <select name="engine" id="engine" data-placeholder="<?= translate('placeholder.engine') ?>" class="form-control" required="required">
                     <option></option>
                     <?php foreach ($engines as $engine => $teams) : ?>
                         <option value="<?= $engine ?>"><?= $engine  ?></option>
@@ -83,8 +83,8 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success btn-lg btn-primary" data-loading-text="Skaičiuojama...">Skaičiuoti</button>
-            <button type="button" class="btn btn-default btn-lg" data-loading-text="Ieškoma...">Rasti geriausią etapo komandą</button>
+            <button type="submit" class="btn btn-success btn-lg btn-primary" data-loading-text="<?= translate('button.calculate.loading') ?>"><?=translate('button.calculate')?></button>
+            <button type="button" class="btn btn-default btn-lg" data-loading-text="<?= translate('button.best.team.loading') ?>"><?= translate('button.best.team') ?></button>
         </div>
     </div>
 </form>
