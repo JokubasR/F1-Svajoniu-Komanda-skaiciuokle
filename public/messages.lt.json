@@ -9,6 +9,7 @@
     "points.engine": "Variklis",
     "points.pilot1": "Pilotas Nr. 1",
     "points.pilot2": "Pilotas Nr. 2",
+    "points.stage": "Etapas",
 
     "alert.error":  "Klaida!",
     "error.no.data.found": "Negauti šio etapo duomenys.",
@@ -17,6 +18,7 @@
     "total.points": "Viso taškų: ",
 
     "title.stage": "Etapas",
+    "title.best.team": "Geriausia etapo komanda",
 
     "label.pilot.1": "Pilotas Nr. 1",
     "label.pilot.2": "Pilotas Nr. 2",

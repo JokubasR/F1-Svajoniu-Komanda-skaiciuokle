@@ -152,6 +152,8 @@ class PointsModel
                 'points' => [
                     'team'      => 0,
                     'engine'    => 0,
+                    'pilot1'    => 0,
+                    'pilot2'    => 0,
                 ],
             ],
         ];
