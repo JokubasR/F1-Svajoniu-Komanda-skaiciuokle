@@ -7,3 +7,4 @@ TODO
 --
 * Rasti kelias geriausias komandas
 * Kešuoti pilotus, komandas, etapus
+* Sugeneruoti sąrašą pagal taškus
