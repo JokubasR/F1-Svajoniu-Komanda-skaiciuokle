@@ -47,6 +47,9 @@
                         </h3>
                     </div>
                     <div class="panel-body">
+                        <p>
+                            <strong><?= translate('points.stage') ?></strong>: <?= $bestTeam['stage']?>
+                        </p>
                         <?php foreach ($eventResults['points'] as $type => $value) : ?>
                             <p>
                                 <strong><?= translate('points.' . $type) ?></strong>: <?= $bestTeam['team'][$type] ?>
