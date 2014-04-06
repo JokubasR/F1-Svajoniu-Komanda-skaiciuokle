@@ -154,7 +154,7 @@ class DataModel
 
             $items = $xpath->query($this->xPathResults);
 
-            if (empty($items) || ! $items->length > 0) {
+            if (empty($items) || ! $items->length > 0){
                 return array();
             }
 

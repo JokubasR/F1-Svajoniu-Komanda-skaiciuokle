@@ -1,25 +1,67 @@
-<div class="panel panel-success">
+<!--<div class="panel panel-success">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <?=translate('title.best.team')?>
-            <span class="pull-right"><strong><?= translate('total.points') ?></strong><span
-                    class="badge alert-success"><?= !empty($bestTeam['points']) ? $bestTeam['points'] : 0 ?></span></span>
+            <?/*=translate('title.best.team')*/?>
+            <span class="pull-right"><strong><?/*= translate('total.points') */?></strong><span
+                    class="badge alert-success"><?/*= !empty($bestTeam['totalPoints']) ? $bestTeam['totalPoints'] : 0 */?></span></span>
         </h3>
     </div>
     <div class="panel-body">
-        <?php if (!empty($bestTeam['team'])) : ?>
+        <?php /*if (!empty($bestTeam['team'])) : */?>
             <p>
-                <strong><?= translate('points.stage') ?></strong>: <?= $bestTeam['stage'] ?>
+                <strong><?/*= translate('points.stage') */?></strong>: <?/*= $bestTeam['stage'] */?>
             </p>
-            <?php foreach ($bestTeam['team'] as $key => $value) : ?>
+            <?php /*foreach ($bestTeam['team'] as $key => $value) : */?>
                 <p>
-                    <strong><?= translate('points.' . $key) ?></strong>: <?= $value ?>
+                    <strong><?/*= translate('points.' . $key) */?></strong>: <?/*= $value */?>
                 </p>
+            <?php /*endforeach; */?>
+        <?php /*else : */?>
+            <div class="alert alert-danger">
+                <strong><?/*= translate('alert.error') */?></strong><?/*=translate('error.no.best.team.found')*/?>
+            </div>
+        <?php /*endif; */?>
+    </div>
+</div>-->
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <?= translate('title.best.team') ?>
+            <span class="pull-right">
+                <strong><?= translate('total.points') ?></strong>
+                <span class="badge alert-success"><?= !empty($bestTeam['totalPoints']) ? $bestTeam['totalPoints'] : 0 ?></span>
+            </span>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <?php if (!empty($bestTeam)) : ?>
+            <?php foreach ($bestTeam['points'] as $eventType => $eventResults) : ?>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <?= translate('points.' . $eventType) ?>
+                            <span class="pull-right"><strong><?= translate('total.points') ?></strong><span
+                                    class="badge alert-success"><?= $eventResults['totalPoints'] ?></span></span>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <?php foreach ($eventResults['points'] as $type => $value) : ?>
+                            <p>
+                                <strong><?= translate('points.' . $type) ?></strong>: <?= $bestTeam['team'][$type] ?>
+                                <span class="badge alert-info"><?=$value?></span>
+                            </p>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
             <?php endforeach; ?>
         <?php else : ?>
             <div class="alert alert-danger">
-                <strong><?= translate('alert.error') ?></strong><?=translate('error.no.best.team.found')?>
+                <strong><?= translate('alert.error') ?></strong> <?= translate('error.no.data.found') ?>
             </div>
         <?php endif; ?>
+
     </div>
 </div>

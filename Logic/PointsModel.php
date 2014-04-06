@@ -232,10 +232,11 @@ class PointsModel
                                     $point = $this->calculatePoints($currentTeam['team'], $qualifyingResults, $raceResults, 'BEST TEAM');
 
                                     if (empty($bestTeam)) {
-                                        $bestTeam = $currentTeam + array('points' => $point['totalPoints']);
+                                        $bestTeam = $currentTeam + $point;
                                     }
-                                    if ($point['totalPoints'] > $bestTeam['points']) {
-                                        $bestTeam = $currentTeam + array('points' => $point['totalPoints']);                                    }
+                                    if ($point['totalPoints'] > $bestTeam['totalPoints']) {
+                                        $bestTeam = $currentTeam + $point;
+                                    }
                                 }
                             }
                         }

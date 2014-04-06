@@ -9,6 +9,7 @@
     <div class="panel-body">
         <?php if (!empty($results)) : ?>
             <?php foreach ($results['points'] as $eventType => $eventResults) : ?>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -25,6 +26,7 @@
                         <?php endforeach; ?>
                     </div>
                 </div>
+
             <?php endforeach; ?>
         <?php else : ?>
             <div class="alert alert-danger">
