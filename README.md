@@ -11,4 +11,4 @@ TODO
 
 BUGFIXES:
 --
-* Ignoruoti lenktynių rezultatus, jei nėra Position stulpelio. Taip būna, kai kvalifikacija jau būna įvykus, o lenktynės - ne.
+* Ignoruoti lenktynių rezultatus, jei nėra Position stulpelio. Taip būna, kai kvalifikacija jau būna įvykus, o lenktynės - ne. (/results.html)
