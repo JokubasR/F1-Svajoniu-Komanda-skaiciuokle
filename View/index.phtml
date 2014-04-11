@@ -1,3 +1,53 @@
+<div class="team panel panel-default row">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Svajonių komanda</h3>
+    </div>
+    <div class="col-sm-12">
+
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-7">
+                    <img data-src="holder.js/130x185" class="img-rounded team-image team-image-top"
+                         alt="<?= translate('alt.pilot.1') ?>"
+                         id="image-pilot-1"
+                         width="130"
+                         height="185">
+                </div>
+                <div class="col-sm-5">
+                    <img data-src="holder.js/130x185" class="img-rounded team-image team-image-top"
+                         alt="<?= translate('alt.pilot.2') ?>"
+                         id="image-pilot-2"
+                         width="130"
+                         height="185">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <img data-src="holder.js/322x158" class="img-rounded team-image team-image-bottom"
+                         alt="<?= translate('alt.team') ?>"
+                         id="image-team"
+                         width="322"
+                         height="158">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 hacky-image">
+            <div class="row">
+                <img data-src="holder.js/305x305" class="img-rounded team-image team-image-bottom"
+                     alt="<?= translate('alt.engine') ?>"
+                     width="auto"
+                     height="305"
+                     id="image-engine"
+                    style="max-width: 305px">
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <form id="form-stage-results" class="form-horizontal" role="form" action="/index.php/points" enctype="multipart/form-data" method="post" data-url="/index.php/best-team">
 
     <div class="form-group">
@@ -16,13 +66,16 @@
         <div class="col-sm-6">
             <label for="pilot1" class="col-sm-4 control-label"><?=translate('label.pilot.1')?></label>
             <div class="col-sm-8">
-                <select name="pilot1" id="pilot-1" class="form-control"
+                <select name="pilot1" id="pilot-1" class="form-control with-image" rel="#image-pilot-1"
                         data-placeholder="<?= translate('placeholder.pilot') ?>" required="required">
                     <option></option>
                     <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
                             <?php foreach ($teamDrivers as $driver) : ?>
-                                <option <?=!empty($userTeam['pilot1']) && $userTeam['pilot1'] === $driver['driverId'] ? 'selected' : null?> value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
+                                <option <?=!empty($userTeam['pilot1']) && $userTeam['pilot1'] === $driver['driverId'] ? 'selected' : null?>
+                                    value="<?= $driver['driverId'] ?>"
+                                    img="<?=$driver['image']?>"
+                                    ><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
                             <?php endforeach; ?>
                         </optgroup>
                     <?php endforeach; ?>
@@ -33,13 +86,16 @@
         <div class="col-sm-6">
             <label for="pilot2" class="col-sm-4 control-label"><?= translate('label.pilot.2') ?></label>
             <div class="col-sm-8">
-                <select name="pilot2" id="pilot-2" class="form-control"
+                <select name="pilot2" id="pilot-2" class="form-control with-image" rel="#image-pilot-2"
                         data-placeholder="<?= translate('placeholder.pilot') ?>" required="required">
                     <option></option>
                     <?php foreach ($drivers as $team => $teamDrivers) : ?>
                         <optgroup label="<?= $team ?>">
                             <?php foreach ($teamDrivers as $driver) : ?>
-                                <option <?= !empty($userTeam['pilot2']) && $userTeam['pilot2'] === $driver['driverId'] ? 'selected' : null ?> value="<?= $driver['driverId'] ?>"><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
+                                <option <?= !empty($userTeam['pilot2']) && $userTeam['pilot2'] === $driver['driverId'] ? 'selected' : null ?>
+                                    value="<?= $driver['driverId'] ?>"
+                                    img="<?= $driver['image'] ?>"
+                                    ><?= sprintf("%d. %s", $driver['driverId'], $driver['title']) ?></option>
                             <?php endforeach; ?>
                         </optgroup>
                     <?php endforeach; ?>
@@ -53,12 +109,14 @@
 
         <div class="col-sm-6">
             <label for="team" class="col-sm-4 control-label"><?= translate('label.team') ?></label>
-
             <div class="col-sm-8">
-                <select name="team" id="team" data-placeholder="<?= translate('placeholder.team') ?>" class="form-control" required="required">
+                <select name="team" id="team" data-placeholder="<?= translate('placeholder.team') ?>" class="form-control with-image" required="required"  rel="#image-team">
                     <option></option>
                     <?php foreach ($teams as $team) :?>
-                        <option <?= !empty($userTeam['team']) && $userTeam['team'] === $team['title'] ? 'selected' : null ?> value="<?= $team['title'] ?>"><?= $team['title'] ?></option>
+                        <option <?= !empty($userTeam['team']) && $userTeam['team'] === $team['title'] ? 'selected' : null ?>
+                            value="<?= $team['title'] ?>"
+                            img="<?=$team['image']?>"
+                            ><?= $team['title'] ?></option>
                     <?php endforeach;  ?>
                 </select>
             </div>
@@ -66,12 +124,14 @@
 
         <div class="col-sm-6">
             <label for="engine" class="col-sm-4 control-label"><?= translate('label.engine') ?></label>
-
             <div class="col-sm-8">
-                <select name="engine" id="engine" data-placeholder="<?= translate('placeholder.engine') ?>" class="form-control" required="required">
+                <select name="engine" id="engine" data-placeholder="<?= translate('placeholder.engine') ?>" class="form-control with-image" required="required" rel="#image-engine">
                     <option></option>
-                    <?php foreach ($engines as $engine => $teams) : ?>
-                        <option <?= !empty($userTeam['engine']) && $userTeam['engine'] === $engine ? 'selected' : null ?> value="<?= $engine ?>"><?= $engine  ?></option>
+                    <?php foreach ($engines as $engine => $data) : ?>
+                        <option <?= !empty($userTeam['engine']) && $userTeam['engine'] === $engine ? 'selected' : null ?>
+                            value="<?= $engine ?>"
+                            img="<?=$data['image']?>"
+                            ><?= $engine  ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

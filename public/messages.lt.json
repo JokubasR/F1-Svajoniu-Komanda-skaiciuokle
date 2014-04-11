@@ -33,5 +33,10 @@
     "placeholder.team": "Pasirinkite komandą",
     "placeholder.engine": "Pasirinkite variklį",
     "placeholder.pilot": "Pasirinkite pilotą",
-    "placeholder.stage": "Pasirinkite etapą"
+    "placeholder.stage": "Pasirinkite etapą",
+
+    "alt.pilot.1": "Pilotas Nr. 1",
+    "alt.pilot.2": "Pilotas Nr. 2",
+    "alt.team": "Komandos logotipas",
+    "alt.engine": "Variklio logotipas"
 }

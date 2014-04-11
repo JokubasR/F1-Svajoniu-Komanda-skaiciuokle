@@ -44,4 +44,14 @@ $(function(){
             }
         })
     });
+
+    $('form#form-stage-results select.form-control.with-image')
+    .each(function (key, select) {
+        var image = $('option:selected', select).attr('img');
+        $('img' + $(this).attr('rel')).attr('src', image);
+    })
+    .change(function(e){
+        var image = $('option:selected', this).attr('img');
+        $('img'+$(this).attr('rel')).attr('src', image);
+    });
 });

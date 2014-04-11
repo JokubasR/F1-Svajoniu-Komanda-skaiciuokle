@@ -1,0 +1,10 @@
+div.team div.row{
+    margin-bottom: 15px;
+    margin-top:  15px;
+}
+
+div.team .hacky-image{
+    text-align: center;
+    line-height: 305px;
+    margin-top: 25px
+}

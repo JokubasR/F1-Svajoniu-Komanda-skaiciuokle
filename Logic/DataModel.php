@@ -26,21 +26,30 @@ class DataModel
 
     private $teamEngines    = array(
         'Mercedes' => array(
-            'Mercedes',
-            'McLaren',
-            'Williams',
-            'Force India',
+            'teams' => array(
+                'Mercedes',
+                'McLaren',
+                'Williams',
+                'Force India',
+            ),
+            'image' => 'public/images/engines/mercedes.png',
         ),
         'Renault' => array(
-            'Red Bull Racing',
-            'Lotus',
-            'Toro Rosso',
-            'Caterham',
+            'teams' => array(
+                'Red Bull Racing',
+                'Lotus',
+                'Toro Rosso',
+                'Caterham',
+            ),
+            'image' => 'public/images/engines/renault.png',
         ),
         'Ferrari' => array(
-            'Ferrari',
-            'Sauber',
-            'Marussia',
+                'teams' => array(
+                'Ferrari',
+                'Sauber',
+                'Marussia',
+            ),
+            'image' => 'public/images/engines/ferrari.png?v=1.1',
         ),
     );
 
@@ -109,7 +118,7 @@ class DataModel
 
             $result[] = array(
                 'title' => $item->childNodes->item(1)->attributes->getNamedItem('alt')->nodeValue,
-                'image' => $team->childNodes->item(1)->childNodes->item(1)->attributes->getNamedItem('src')->nodeValue,
+                'image' => Settings::URL_HOST . $team->childNodes->item(1)->childNodes->item(1)->attributes->getNamedItem('src')->nodeValue,
                 'members' => array(
                     array(
                         'title' => $item->childNodes->item(2)->attributes->getNamedItem('alt')->nodeValue,
@@ -209,6 +218,10 @@ class DataModel
 
             $team = $item->childNodes->item(1)->nodeValue;
 
+            $driverLink = $item->attributes->getNamedItem('href')->nodeValue;
+            $driverExternalId = explode('/', $driverLink);
+            $driverExternalId = $driverExternalId[count($driverExternalId)-2];
+
             $driverData = explode(' ', trim($driverData));
 
             $driverId = array_shift($driverData);
@@ -216,6 +229,7 @@ class DataModel
                 'driverId'  => $driverId,
                 'title'     => implode(' ', $driverData),
                 'team'      => $team,
+                'image'     => sprintf(Settings::URL_HOST . Settings::URL_DRIVER_IMAGE, $driverExternalId),
             );
         }
 
@@ -288,6 +302,7 @@ class DataModel
 
     /**
      * Checks if team is assigned to given engine
+     * @deprecated
      * @param $engine
      * @param $team
      *
