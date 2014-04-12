@@ -77,4 +77,32 @@ class IndexController extends BaseController
             'bestTeam' => $bestTeam,
         )));
     }
+
+    public function stageAnalysisAction()
+    {
+        try {
+            $stages = $this->_dataModel->getGrandPrixs();
+        } catch (\Exception $exception) {
+            $stages = array();
+        }
+
+        return $this->render('stage-analysis', array(
+            'stages'    => $stages,
+        ));
+    }
+
+    public function getStageAnalysisAction()
+    {
+        try{
+            if (!empty($_POST['stage'])) {
+                $results = $this->_dataModel->getStageAnalysis($_POST['stage']);
+            }
+        } catch (\Exception $exception) {
+            $results = array();
+        }
+        
+        die($this->renderAjax('stage-analysis-results', array(
+            'results' => $results,
+        )));
+    }
 } 

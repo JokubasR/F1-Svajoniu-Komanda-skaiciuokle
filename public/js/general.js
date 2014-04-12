@@ -54,4 +54,23 @@ $(function(){
         var image = $('option:selected', this).attr('img');
         $('img'+$(this).attr('rel')).attr('src', image);
     });
+
+    $('form#form-analysis button[type="button"]').click(function (e) {
+        e.preventDefault();
+
+        var btn = $(this);
+        btn.button('loading');
+
+        $.ajax({
+            type: "POST",
+            url: $(this).parents('form').attr('action'),
+            data: $(this).parents('form').serializeArray(),
+
+            success: function (template) {
+                $('div#stage-analysis-results').html(template);
+                btn.button('reset');
+            }
+        })
+    });
+
 });

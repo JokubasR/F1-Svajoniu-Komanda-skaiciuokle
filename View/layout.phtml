@@ -27,17 +27,14 @@
 
 <div class="container">
     <div class="header">
-        <h2 class="text-muted"><?= translate("layout.header") ?></h2>
+        <ul class="nav nav-pills pull-right">
+            <li <?=isMenuKeyActive('default')?>><a href="/"><?=translate('menu.key.default')?></a></li>
+            <li <?=isMenuKeyActive('stage-analysis')?>><a href="/index.php/stage-analysis"><?=translate('menu.key.stage.analysis')?></a></li>
+        </ul>
+        <h3 class="text-muted"><a href="/" class="brand-headline"><?= translate("layout.header") ?></a></h3>
     </div>
 
-    <div class="alert alert-warning fade in">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <p class="lead"><?=translate('layout.main.message')?></p>
-    </div>
-
-    <div class="container-fluid">
-        <?= $content ?>
-    </div>
+    <?= $content ?>
 
     <div class="footer">
         <p>

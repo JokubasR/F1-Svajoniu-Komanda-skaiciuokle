@@ -38,5 +38,8 @@
     "alt.pilot.1": "Pilotas Nr. 1",
     "alt.pilot.2": "Pilotas Nr. 2",
     "alt.team": "Komandos logotipas",
-    "alt.engine": "Variklio logotipas"
+    "alt.engine": "Variklio logotipas",
+
+    "menu.key.default": "Pagrindinis",
+    "menu.key.stage.analysis": "Etapo analizė"
 }

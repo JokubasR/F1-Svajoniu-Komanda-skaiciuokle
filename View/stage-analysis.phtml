@@ -1,0 +1,21 @@
+<p class="bg-info" style="padding: 15px"><?=translate('stage.analysis.info')?></p>
+
+<form id="form-analysis" class="form-horizontal" role="form" action="/index.php/get-stage-analysis" enctype="multipart/form-data" method="get">
+    <div class="form-group">
+        <label for="stage" class="col-sm-2 control-label"><?= translate('title.stage') ?></label>
+        <div class="col-sm-10">
+            <select name="stage" id="stage" data-placeholder="<?= translate('placeholder.stage') ?>" class="form-control" required="required">
+                <?php foreach ($stages as $stage) : ?>
+                    <option value="<?= $stage['link'] ?>"><?= $stage['title'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="button" class="btn btn-success btn-lg btn-primary" data-loading-text="<?= translate('button.analysing') ?>"><?= translate('button.analise') ?></button>
+        </div>
+    </div>
+</form>
+
+<div id="stage-analysis-results"></div>

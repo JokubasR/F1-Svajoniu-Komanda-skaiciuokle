@@ -30,6 +30,8 @@ abstract class BaseController
             throw new \Exception(printf('File %s not found in path %s.', VIEW_DIR, VIEW_DIR . $template));
         }
 
+        global $_active_route;
+
         if (!empty($variables)) {
             foreach ($variables as $name => $value) {
                 $$name = $value;

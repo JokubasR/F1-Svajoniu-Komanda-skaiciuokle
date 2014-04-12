@@ -389,6 +389,11 @@ class DataModel
         return $data;
     }
 
+    public function getStageAnalysis($stage)
+    {
+
+    }
+
     /**
      * @param $url
      *

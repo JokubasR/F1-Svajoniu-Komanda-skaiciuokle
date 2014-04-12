@@ -43,10 +43,6 @@
 
     $query = $_SERVER['REQUEST_URI'];
 
-    /*
-     * Mini router
-     */
-
     try{
         switch(true){
             case strpos($query, 'points'):
@@ -55,10 +51,25 @@
             case strpos($query, 'best-team'):
                 $indexController->bestTeamAction();
                 break;
+            case strpos($query, 'get-stage-analysis'):
+                $indexController->getStageAnalysisAction();
+                break;
+            case strpos($query, 'stage-analysis'):
+                $_active_route = "stage-analysis";
+                $indexController->stageAnalysisAction();
+                break;
             default:
+                $_active_route = "default";
                 $indexController->defaultAction();
         }
     } catch (Exception $exception) {
         die('Something went bad!');
+    }
+
+    function isMenuKeyActive($route){
+        global $_active_route;
+        return $route === $_active_route
+            ? "class='active'"
+            : null;
     }
 
