@@ -26,23 +26,32 @@ class DataModel
 
     private $xPathRaceTitle = "//div[@class='raceResultsHeading']/h2/text()";
 
-    private $teamEngines    = array(
+    private $teamEngines = array(
         'Mercedes' => array(
-            'Mercedes',
-            'McLaren',
-            'Williams',
-            'Force India',
+            'teams' => array(
+                'Mercedes',
+                'McLaren',
+                'Williams',
+                'Force India',
+            ),
+            'image' => 'public/images/engines/mercedes.png',
         ),
-        'Renault' => array(
-            'Red Bull Racing',
-            'Lotus',
-            'Toro Rosso',
-            'Caterham',
+        'Renault'  => array(
+            'teams' => array(
+                'Red Bull Racing',
+                'Lotus',
+                'Toro Rosso',
+                'Caterham',
+            ),
+            'image' => 'public/images/engines/renault.png',
         ),
-        'Ferrari' => array(
-            'Ferrari',
-            'Sauber',
-            'Marussia',
+        'Ferrari'  => array(
+            'teams' => array(
+                'Ferrari',
+                'Sauber',
+                'Marussia',
+            ),
+            'image' => 'public/images/engines/ferrari.png?v=1.1',
         ),
     );
 
