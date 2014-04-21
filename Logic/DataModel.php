@@ -16,9 +16,11 @@ class DataModel
 
     private $xPathTeam      = "//div[@id='contentMain']//div[@class='indexContainer']";
 
-    private $xPathResults       = "//table[@class='raceResults']/tr[position() > 1]";
+    private $xPathResults        = "//table[@class='raceResults']/tr[position() > 1]";
 
     private $xPathQualifyingLink = "//li[@class='listheader' and contains(., 'QUALIFYING')]//a[contains(.,'QUALIFYING')]/@href";
+
+    private $xPathRaceLink       = "//li[@class='listheader' and contains(., 'RACE')]//a[text() = 'RACE']/@href";
 
     private $xPathDrivers   = "//ul[@class='driverMugShot']/li/div/p/a";
 
@@ -248,13 +250,41 @@ class DataModel
             throw new \Exception('No results found', 202);
         }
 
-        $qualifyingLink = $items->item(0)->nodeValue;
+        $qualifyingLink = $items->item(0)->nodeValue . 'results.html';
 
         /*
          * Get qualifying results
          */
 
         return $this->getResults(null, null, $qualifyingLink);
+    }
+
+    public function getRaceResults($raceUrl)
+    {
+        /*
+         * Get race results url
+         */
+        $data = $this->getContent(Settings::URL_HOST . $raceUrl);
+
+        $doc = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $doc->loadHTML($data);
+
+        $xpath = new \DOMXPath($doc);
+
+        $items = $xpath->query($this->xPathRaceLink);
+
+        if (empty($items) || !$items->length > 0) {
+            throw new \Exception('No results found', 202);
+        }
+
+        $raceLink = $items->item(0)->nodeValue . 'results.html';
+
+        /*
+         * Get qualifying results
+         */
+
+        return $this->getResults(null, null, $raceLink);
     }
 
     public function getGrandPrixTitle($stageUrl)

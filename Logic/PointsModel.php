@@ -101,7 +101,7 @@ class PointsModel
                                 ? $this->_dataModel->getQualifyingResults($data['stage'])
                                 : $qualifyingResults;
         $raceResults        = empty($raceResults)
-                                ? $this->_dataModel->getResults(null, null, $data['stage'])
+                                ? $this->_dataModel->getRaceResults($data['stage'])
                                 : $raceResults;
 
         $points = array();
