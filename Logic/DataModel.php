@@ -337,7 +337,20 @@ class DataModel
     public function getTeamFromResultData($teamTitle)
     {
         $team = explode('-', $teamTitle);
-        return array_shift($team);
+
+        $team = array_shift($team);
+
+        /*
+         * HACK
+         * In teams list Toro Rosso team is labeled as "Toro Rosso", but in results list it's "STR".
+         * @todo do something about it
+         */
+
+        if ("STR" === $team) {
+            $team = "Toro Rosso";
+        }
+        
+        return $team;
     }
 
     /**
