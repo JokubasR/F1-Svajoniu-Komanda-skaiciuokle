@@ -99,19 +99,19 @@ class DataModel
 
         $items = $xpath->query($this->xPathTeam);
 
-        if (empty($items) || ! $items->length > 0) {
+        if (empty($items) || !$items->length > 0) {
             throw new \Exception('No results found', 202);
         }
 
         $result = array();
 
         for ($i = 0; $i < $items->length; $i++) {
-            $item     = $items->item($i)->childNodes->item(1);
-            $team     = $items->item($i)->childNodes->item(3);
+            $item = $items->item($i)->childNodes->item(1);
+            $team = $items->item($i)->childNodes->item(3);
 
             $result[] = array(
-                'title' => $item->childNodes->item(1)->attributes->getNamedItem('alt')->nodeValue,
-                'image' => $team->childNodes->item(1)->childNodes->item(1)->attributes->getNamedItem('src')->nodeValue,
+                'title'   => $item->childNodes->item(1)->attributes->getNamedItem('alt')->nodeValue,
+                'image'   => Settings::URL_HOST . $team->childNodes->item(1)->childNodes->item(1)->attributes->getNamedItem('src')->nodeValue,
                 'members' => array(
                     array(
                         'title' => $item->childNodes->item(2)->attributes->getNamedItem('alt')->nodeValue,
@@ -198,7 +198,7 @@ class DataModel
 
         $items = $xpath->query($this->xPathDrivers);
 
-        if (empty($items) || ! $items->length > 0) {
+        if (empty($items) || !$items->length > 0) {
             throw new \Exception('No results found', 202);
         }
 
@@ -211,13 +211,18 @@ class DataModel
 
             $team = $item->childNodes->item(1)->nodeValue;
 
+            $driverLink       = $item->attributes->getNamedItem('href')->nodeValue;
+            $driverExternalId = explode('/', $driverLink);
+            $driverExternalId = $driverExternalId[count($driverExternalId) - 2];
+
             $driverData = explode(' ', trim($driverData));
 
-            $driverId = array_shift($driverData);
+            $driverId                 = array_shift($driverData);
             $result[$team][$driverId] = array(
-                'driverId'  => $driverId,
-                'title'     => implode(' ', $driverData),
-                'team'      => $team,
+                'driverId' => $driverId,
+                'title'    => implode(' ', $driverData),
+                'team'     => $team,
+                'image'    => sprintf(Settings::URL_HOST . Settings::URL_DRIVER_IMAGE, $driverExternalId),
             );
         }
 
